@@ -10,15 +10,25 @@ jobs:
   pre-release:
     name: "Pre Release"
     runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        python-version: [3.8]
 
     steps:
       - uses: actions/checkout@v2
-      - name: "tar gz"
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }
+      - name: Install edam2json
         run: |
-          tar -czf my-file.txt.tar.gz my-file.txt
-      - name: "tar bz"
+          python -m pip install --upgrade pip
+          pip install git+https://github.com/edamontology/edam2json.git
+      - name: Conversion
         run: |
-          tar -cjf my-file.txt.tar.bz my-file.txt
+          ls -lah
+          wget https://github.com/edamontology/edamontology/raw/main/EDAM_dev.owl
+          edam2json EDAM_dev.owl -o EDAM_dev.min.json biotools --minified --extended
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -26,6 +36,4 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            my-file.txt
-            my-file.txt.tar.bz
-            my-file.txt.tar.gz
+            EDAM_dev.min.json
