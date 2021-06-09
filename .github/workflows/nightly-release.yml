@@ -13,12 +13,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: "Build & test"
+      - name: "tar gz"
         run: |
-          ls -lah
           tar -czf my-file.txt.tar.gz my-file.txt
-          echo "done!"
-
+      - name: "tar bz"
+        run: |
+          tar -cjf my-file.txt.tar.bz my-file.txt
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -27,4 +27,5 @@ jobs:
           title: "Development Build"
           files: |
             my-file.txt
+            my-file.txt.tar.bz
             my-file.txt.tar.gz
