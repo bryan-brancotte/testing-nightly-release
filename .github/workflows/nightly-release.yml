@@ -26,4 +26,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
+            my-file.txt
             my-file.txt.gz
