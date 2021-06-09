@@ -16,7 +16,7 @@ jobs:
       - name: "Build & test"
         run: |
           ls -lah
-          gzip my-file.txt
+          tar -czf my-file.txt.tar.gz my-file.txt
           echo "done!"
 
       - uses: "marvinpinto/action-automatic-releases@latest"
@@ -27,4 +27,4 @@ jobs:
           title: "Development Build"
           files: |
             my-file.txt
-            my-file.txt.gz
+            my-file.txt.tar.gz
